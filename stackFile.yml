@@ -1,0 +1,61 @@
+version: '1.0'
+services:
+  - name: db
+    type: postgres
+    version: 10.4
+    configuration: StandAlone
+    ports:
+      - 5432
+    username: helpy
+    database: helpy
+    userPassword: null
+    remoteAccess: false
+    deployTo:
+      - helpy
+
+  - name: helpy
+    type: docker
+    image: d2cio/helpy
+    version: latest
+    ports:
+      - 8080
+    remoteAccess: false
+    env:
+      POSTGRES_HOST: "{{=service('db').getMasterAlias()}}"
+      POSTGRES_DB: "{{=service('db').get('database')}}"
+      POSTGRES_USER: "{{=service('db').get('username')}}"
+      POSTGRES_PASSWORD: "{{=service('db').get('userPassword')}}"
+      SECRET_KEY_BASE: "{{=randomString(32)}}"
+      ADMIN_LOGIN: null
+      ADMIN_EMAIL: null
+      ADMIN_PASSWORD: null
+    localDeps: |
+      cd /helpy
+      bundle exec rake assets:precompile
+      bundle exec rake db:migrate
+      bundle exec rake db:seed || echo "db is already seeded!"
+    volumes:
+      - directory: /helpy/public
+    volumesUID: 1000
+    deployTo:
+      - helpy
+
+  - name: web
+    type: nginx
+    version: 1.14
+    ports:
+      - 80
+      - 443
+    remoteAccess: true
+    serviceFiles:
+      - name: helpy
+        static: true
+        src: ./configs/helpy.conf
+    deployTo:
+      - helpy
+
+hosts:
+  - name: helpy
+    requirements:
+      cores: 1
+      memory: 2
