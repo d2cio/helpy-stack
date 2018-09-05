@@ -8,9 +8,9 @@
 3. Fill in necessary fields (if they are, e.g. link to your repository)
 4. Click **Create hosts and services**
 
-<!-- ## Demo
+## Demo
 
-![How to deploy a stack](https://github.com/mastappl/images/blob/master/pyrocms.gif) -->
+![How to deploy a stack](https://raw.githubusercontent.com/mastappl/images/master/helpy.gif)
 
 ## Minimal recommended configuration:
 
