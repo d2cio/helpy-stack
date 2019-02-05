@@ -29,6 +29,7 @@ services:
       ADMIN_LOGIN: null
       ADMIN_EMAIL: null
       ADMIN_PASSWORD: null
+      RAILS_SERVE_STATIC_FILES: 1
     localDeps: |
       cd /helpy
       bundle exec rake assets:precompile
@@ -49,7 +50,6 @@ services:
     remoteAccess: true
     serviceFiles:
       - name: helpy
-        static: true
         src: ./configs/helpy.conf
     deployTo:
       - helpy
