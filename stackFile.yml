@@ -2,7 +2,7 @@ version: '1.0'
 services:
   - name: db
     type: postgres
-    version: 10.4
+    version: 11.1
     configuration: StandAlone
     ports:
       - 5432
@@ -30,6 +30,7 @@ services:
       ADMIN_EMAIL: null
       ADMIN_PASSWORD: null
       RAILS_SERVE_STATIC_FILES: 1
+      HOME: /helpy
     localDeps: |
       cd /helpy
       bundle exec rake assets:precompile
@@ -43,7 +44,7 @@ services:
 
   - name: web
     type: nginx
-    version: 1.14
+    version: 1.15
     ports:
       - 80
       - 443
